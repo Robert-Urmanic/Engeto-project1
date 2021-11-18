@@ -2,6 +2,7 @@ package com.engeto.urm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class FileDeconstruction {
@@ -13,6 +14,16 @@ public class FileDeconstruction {
     private List<Integer> countryDPH = new ArrayList<>();
     private List<Double> countryDPHLowered = new ArrayList<>();
     private List<Boolean> countryUsingDPH = new ArrayList<>();
+
+    private static int filterDPH = 20;
+
+    public void setFilterDPH(int filterDPH){
+        this.filterDPH = filterDPH;
+    }
+
+    public String getFilterDPH(){
+        return "" + filterDPH;
+    }
 
     public void fileDeconstruction() {
         try (Scanner scannerVat = new Scanner(new File("vat-eu.csv"))) {
@@ -54,9 +65,10 @@ public class FileDeconstruction {
     public String toStringWithRestrictions() {
         String print = "";
         for (int i = 0; i < countryShortName.size(); i++) {
-            if ((countryDPH.get(i).compareTo(Integer.valueOf(20)) > 0) && countryUsingDPH.get(i) == false) {
+            if ((countryDPH.get(i).compareTo(Integer.valueOf(filterDPH)) > 0) && countryUsingDPH.get(i) == false) {
                 // specifying what countries we want to have printed out
-                print = print + countryName.get(i) + " (" + countryShortName.get(i) + "): " + countryDPH.get(i) + "%\n";
+                print = print + countryName.get(i) + " (" + countryShortName.get(i) + "):\t" + countryDPH.get(i) + " % "
+                        + "(" + new DecimalFormat("#.#").format(countryDPHLowered.get(i)) + " %)\n";
             }
         }
         return print;
@@ -91,6 +103,10 @@ public class FileDeconstruction {
                     countryName.set(i + 1, countryName.get(i));
                     countryName.set(i, tempValCountryName);
 
+                    Double tempValCountryDPHLowered = countryDPHLowered.get(i + 1);
+                    countryDPHLowered.set(i + 1, countryDPHLowered.get(i));
+                    countryDPHLowered.set(i, tempValCountryDPHLowered);
+
                     // names have to follow the same switching mechanism for desired outcome, names have to match the DPH
 
                 }
@@ -104,16 +120,27 @@ public class FileDeconstruction {
     public String toStringSortedWithExceptionsWithUnusedStates() {
         String print = "\nSazba VAT 20 % nebo nižší nebo používají speciální sazbu: ";
         for (int i = 0; i < countryShortName.size(); i++) {
-            if ((countryDPH.get(i).compareTo(Integer.valueOf(20)) <= 0) || countryUsingDPH.get(i) == true) {
-                print = print + countryShortName.get(i) + " ";
+            if ((countryDPH.get(i).compareTo(Integer.valueOf(filterDPH)) <= 0) || countryUsingDPH.get(i) == true) {
+                print = print + countryShortName.get(i) + dot(i, countryShortName.size());
+                    // dot method for better aesthetics
             }
         }
 
 
-        return toStringSortedDescendingDPH() + print;
+        return toStringSortedDescendingDPH() + "======================" + print;
         // reusing method and printing out unchosen countries
     }
+
+    public String dot(int finalInt, int finalLoopInt){
+        if ((finalInt + 1) == finalLoopInt){
+            return ".";
+        }
+        else return ", ";
+        // replaces the last "," with a "." looks better (y)
+    }
 }
+
+
 
 
 // TODO: 17.11.2021 while loop which will let user choose what to do, the user can choose to print, print with restrictions, print sorted toString
