@@ -1,0 +1,9 @@
+Chceme vypsat státy se sazbou daně vyšší, než 20% a nepoužívají speciální sazbu DPH/VAT
+2 údaje 20%> a nepoužívají speciální sazbu DPH/VAT
+nested if ?
+uchovat státy do array?
+List<> staty
+if(DPH>20 && DPH false)
+      staty.add()
+
+      počíst try with resources
