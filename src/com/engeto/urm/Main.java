@@ -12,7 +12,9 @@ public class Main {
         System.out.println("---------------------------");
         System.out.println(f.toStringWithRestrictions());
         System.out.println("---------------------------");
-        f.sortTest();
+        System.out.println(f.toStringSortedDescendingDPH());
+        System.out.println("---------------------------");
+        System.out.println(f.toStringSortedWithExceptionsWithUnusedStates());
     }
 }
 
