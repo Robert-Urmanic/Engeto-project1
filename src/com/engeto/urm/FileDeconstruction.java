@@ -7,7 +7,7 @@ import java.util.*;
 
 public class FileDeconstruction {
 
-    // This class will deconstruct the whole file and construct 5 ArrayLists with specific values
+    // This class will deconstruct the whole file and construct 5 ArrayLists with specific values (country name, shortened name etc...)
 
     private List<String> countryShortName = new ArrayList<>();
     private List<String> countryName = new ArrayList<>();
@@ -17,13 +17,17 @@ public class FileDeconstruction {
 
     private static int filterDPH = 20;
 
-    public void setFilterDPH(int filterDPH){
+    public void setFilterDPH(int filterDPH) throws IllegalArgumentException{
+        if(!(filterDPH > 0) && (filterDPH < 100)){
+            throw new IllegalArgumentException("\nVAT cannot exceed the value of 100 AND cannot go below the value of 0\nThe VAT value will remain at default 20%");
+        }
         this.filterDPH = filterDPH;
     }
 
     public String getFilterDPH(){
         return "" + filterDPH;
     }
+    // Getter and setter used in FileCreation.java
 
     public void fileDeconstruction() {
         try (Scanner scannerVat = new Scanner(new File("vat-eu.csv"))) {
@@ -44,6 +48,7 @@ public class FileDeconstruction {
     }
 
     private void feedLists(String[] countryComplete) {
+        // adding information to lists from String[] countryComplete
         countryShortName.add(countryComplete[0]);
         countryName.add(countryComplete[1]);
         countryDPH.add(Integer.parseInt(countryComplete[2]));
