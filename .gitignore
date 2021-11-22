@@ -1,3 +1,7 @@
-.csv
-.idea
-.txt
+*.csv
+*.idea
+*.txt
+
+**/.idea/
+**/out/
+**/.iml/
