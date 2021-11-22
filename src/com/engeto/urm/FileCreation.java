@@ -10,5 +10,6 @@ public class FileCreation {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        // for some reason file is created only after the application is closed
     }
 }

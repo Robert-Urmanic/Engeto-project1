@@ -17,16 +17,17 @@ public class FileDeconstruction {
 
     private static int filterDPH = 20;
 
-    public void setFilterDPH(int filterDPH) throws IllegalArgumentException{
-        if(!((filterDPH > 0) && (filterDPH < 100))){
+    public void setFilterDPH(int filterDPH) throws IllegalArgumentException {
+        if (!((filterDPH > 0) && (filterDPH < 100))) {
             throw new IllegalArgumentException("\nVAT cannot exceed the value of 100 AND cannot go below the value of 0\nThe VAT value will remain at default 20%");
         }
         this.filterDPH = filterDPH;
     }
 
-    public String getFilterDPH(){
+    public String getFilterDPH() {
         return "" + filterDPH;
     }
+
     // Getter and setter used in FileCreation.java
 
     public void fileDeconstruction() {
@@ -61,7 +62,8 @@ public class FileDeconstruction {
         String print = "";
         for (int i = 0; i < countryShortName.size(); i++) {
             print = print + countryName.get(i) + " (" + countryShortName.get(i) + "): " + countryDPH.get(i) + "%\n";
-            // .size() of any country* variable will do
+            // .size() of any country* variable will do fine
+            // print += could be used but I feel more secure with this version
         }
         return print;
         // printing countries and DPH in desired format
@@ -74,10 +76,10 @@ public class FileDeconstruction {
                 // specifying what countries we want to have printed out
                 print = print + countryName.get(i) + " (" + countryShortName.get(i) + "):\t" + countryDPH.get(i) + " % "
                         + "(" + new DecimalFormat("#.#").format(countryDPHLowered.get(i)) + " %)\n";
+                //DecimalFormat used for better formating (no useless .00 zeroes)
             }
         }
         return print;
-        // printing only selected countries in desired format
     }
 
     public String toStringSortedDescendingDPH() {
@@ -85,10 +87,12 @@ public class FileDeconstruction {
         Integer tempLoop = new Integer(countryDPH.size());
         // had to implement my own bubble sorting algorithm
         // the algorithm sorts by countryDPH
-        // we can allocate other information which will always fit because the lists are fed in this way:
+        // we can allocate other information which will always fit with countryDPH because the lists are fed in this way:
         // list DPH = 10 20 30 20
         // list name = CZ SK CR GR
         // list fname = Czech republic Slovakia Croatia Greece
+        // so if we change the DPH to 30 20 20 10 we also need to change name and fname, but I couldn't
+        // find another way of doing this with sorting methods from Collections or List, so I had to implement mine
 
         for (int j = 0; j < tempLoop; j++) {
             for (int i = 0; i < (countryDPH.size() - 1); i++) {
@@ -112,14 +116,13 @@ public class FileDeconstruction {
                     countryDPHLowered.set(i + 1, countryDPHLowered.get(i));
                     countryDPHLowered.set(i, tempValCountryDPHLowered);
 
-                    // names have to follow the same switching mechanism for desired outcome, names have to match the DPH
+                    // names have to follow the same switching/ sorting mechanism for desired outcome, names have to match the DPH
 
                 }
             }
         }
 
         return toStringWithRestrictions();
-        // reusing a method
     }
 
     public String toStringSortedWithExceptionsWithUnusedStates() {
@@ -127,7 +130,7 @@ public class FileDeconstruction {
         for (int i = 0; i < countryShortName.size(); i++) {
             if ((countryDPH.get(i).compareTo(Integer.valueOf(filterDPH)) <= 0) || countryUsingDPH.get(i) == true) {
                 print = print + countryShortName.get(i) + dot(i, countryShortName.size());
-                    // dot method for better aesthetics
+                // dot method for better aesthetics
             }
         }
 
@@ -136,16 +139,10 @@ public class FileDeconstruction {
         // reusing method and printing out unchosen countries
     }
 
-    public String dot(int finalInt, int finalLoopInt){
-        if ((finalInt + 1) == finalLoopInt){
+    public String dot(int finalInt, int finalLoopInt) {
+        if ((finalInt + 1) == finalLoopInt) {
             return ".";
-        }
-        else return ", ";
+        } else return ", ";
         // replaces the last "," with a "." looks better (y)
     }
 }
-
-
-
-
-// TODO: 17.11.2021 while loop which will let user choose what to do, the user can choose to print, print with restrictions, print sorted toString
