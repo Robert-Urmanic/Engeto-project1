@@ -19,7 +19,8 @@ public class Project {
         if ("Y".equals(tempDecision.toUpperCase())) {
             System.out.println("Enter desired VAT limit: ");
             inputChecker(f, s);
-        } else System.out.println("VAT stays at default 20%...");
+            System.out.println("VAT limit set to: " + f.getFilterDPH() + "%");
+        } else System.out.println("VAT stays at default 20%...\n");
         System.out.println("Choose what you wish to do from the following: ");
         System.out.println("1. Write out entire file\n\t\t\t(number 2 requirement in project description)");
         System.out.println("2. Write out file which has been filtered by VAT and special prices\n\t\t\t(number 3 requirement in project description)");
@@ -28,18 +29,18 @@ public class Project {
         System.out.println("5. Create a new text file with filtered info\n\t\t\t(number 6 requirement in project description)");
         System.out.println("6. Change the VAT rate\n\t\t\t(number 7 requirement in project description)");
         System.out.println("7. Exit");
+        System.out.println("\nPlease type in a number: ");
 
         boolean b = true;
 
         while (b) {
             Scanner s2 = new Scanner(System.in);
             int temp = 10;
-            try{
+            try {
                 temp = s2.nextInt();
-            }catch (InputMismatchException ex){
-                System.err.println("You can only type in numbers");
+            } catch (InputMismatchException ex) {
             }
-            // had to create new Scanner, program mě zde nenechal jít dál, když jsem naschvál po odsouhlašení změny DPH napsal charakter...
+            // had to create new Scanner, program mě zde nenechal jít dál, když jsem naschvál po odsouhlašení změny DPH ( napsal charakter...
             switch (temp) {
                 case 1:
                     System.out.println(f.toStringFullList());
@@ -63,13 +64,14 @@ public class Project {
                     break;
                 case 5:
                     FileCreation.setFile(f);
+                    // sout file created
                     System.out.println();
                     System.out.println("Choose again, or type any character if you need the key: ");
                     break;
                 case 6:
                     System.out.println("Enter desired VAT limit: ");
-                    inputChecker(f,s2);
-                    System.out.println("VAT limit set to: " + f.getFilterDPH());
+                    inputChecker(f, s2);
+                    System.out.println("VAT limit set to: " + f.getFilterDPH() + "%");
                     System.out.println();
                     System.out.println("Choose again, or type any character if you need the key: ");
                     break;
@@ -85,6 +87,7 @@ public class Project {
                     System.out.println("5. Create a new text file with filtered info\n\t\t\t(number 6 requirement in project description)");
                     System.out.println("6. Change the VAT rate\n\t\t\t(number 7 requirement in project description)");
                     System.out.println("7. Exit");
+                    System.out.println("\nPlease type in a number: ");
             }
         }
 
@@ -107,12 +110,18 @@ public class Project {
     private static void inputChecker(FileDeconstruction f, Scanner s) {
         try {
             int tempInt = 20;
-            try{
+
+            try {
                 tempInt = s.nextInt();
-            }catch(InputMismatchException ex){
+            } catch (InputMismatchException ex) {
                 System.err.println("Scanner can only accept int, value of VAC was set to 20%");
+            } /*catch (IllegalArgumentException ex){
+                System.err.println("VAT cannot exceed the value of 100% or be below 0%!");
             }
+            */
+
             f.setFilterDPH(tempInt);
+
         } catch (IllegalArgumentException e) {
             System.err.println(e);
             //e.printStackTrace();

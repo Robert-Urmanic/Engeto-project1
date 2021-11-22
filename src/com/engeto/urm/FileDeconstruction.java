@@ -18,7 +18,7 @@ public class FileDeconstruction {
     private static int filterDPH = 20;
 
     public void setFilterDPH(int filterDPH) throws IllegalArgumentException{
-        if(!(filterDPH > 0) && (filterDPH < 100)){
+        if(!((filterDPH > 0) && (filterDPH < 100))){
             throw new IllegalArgumentException("\nVAT cannot exceed the value of 100 AND cannot go below the value of 0\nThe VAT value will remain at default 20%");
         }
         this.filterDPH = filterDPH;
